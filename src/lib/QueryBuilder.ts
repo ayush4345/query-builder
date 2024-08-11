@@ -1,6 +1,5 @@
 import { Rule, RuleGroup } from "@/models/rules.model";
 
-
 export class QueryBuilder {
   private ruleGroup: RuleGroup;
 
@@ -45,6 +44,8 @@ export class QueryBuilder {
     const childStrings = children.map(child => {
       if (child.type === 'rule_group') {
         const qb = new QueryBuilder();
+
+        qb.setConjunction(child.conjunction)
         child.children.map((data) => {
           qb.addRule(data as Rule);
         })

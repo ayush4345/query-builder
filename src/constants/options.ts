@@ -1,0 +1,2 @@
+export const FieldType: string[] = ['Theme', 'Sub-theme', 'Reason', 'Language', 'Source', 'Rating', 'Time Period', 'Customer ID']
+export const ConditionType: string[] = ['Equals', 'Does not equal', 'Like', 'Not like', 'Is Empty', 'Is', 'Is not']
