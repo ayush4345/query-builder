@@ -17,10 +17,25 @@ export class QueryBuilder {
     return this;
   }
 
-  deleteRule(index: number): this {
-    if (this.ruleGroup.children.length > 0 && this.ruleGroup.children[index].type == 'rule') {
-      this.ruleGroup.children.splice(index, 1);
-    }
+  deleteRule(rule: Rule): this {
+
+    const rules = this.ruleGroup.children.filter(child => child.type === 'rule');
+
+    const modifiedRulesArray = rules.filter(obj => {
+      if (
+        obj.field == rule.field &&
+        obj.condition == rule.condition &&
+        obj.value == rule.value
+      ) {
+        return false
+      } else {
+        return true
+      }
+    });
+
+    const nonRules = this.ruleGroup.children.filter(child => child.type !== 'rule');
+
+    this.ruleGroup.children = [...nonRules, ...modifiedRulesArray];
     return this;
   }
 

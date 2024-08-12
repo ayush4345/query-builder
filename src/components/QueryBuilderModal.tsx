@@ -26,7 +26,7 @@ const QueryBuilderModal = ({ setOpenModal, queryBuilder }: QueryBuilderModalProp
     const [field, setField] = useState<Rule['field']>()
     const [condition, setCondition] = useState<Rule['condition']>()
     const [value, setValue] = useState<string>('')
-    const [viewMore, setViewMore] = useState<boolean>(false)
+    const [viewMore, setViewMore] = useState<boolean>(true)
 
     const [ruleGroupObject, setRuleGroupObject] = useState<RuleGroup | null>(null);
     const [ruleGroupString, setRuleGroupString] = useState('');
@@ -37,6 +37,8 @@ const QueryBuilderModal = ({ setOpenModal, queryBuilder }: QueryBuilderModalProp
     };
 
     const handleAddRule = () => {
+        if (field == undefined || condition == undefined || value == "") return
+
         queryBuilder
             .addRule({ field: field, condition: condition, value: [value], type: 'rule' })
             .setConjunction(mainConjunction);
@@ -69,9 +71,10 @@ const QueryBuilderModal = ({ setOpenModal, queryBuilder }: QueryBuilderModalProp
         }
     }
 
-    const handleDeleteRule = (index: number) => {
+    const handleDeleteRule = ({ field, condition, value }: { field: Rule["field"], condition: Rule["condition"], value: Rule['value'] }) => {
 
-        queryBuilder.deleteRule(index);
+        queryBuilder.deleteRule({ field: field, condition: condition, value: value, type: 'rule' })
+
         updateRuleGroupState();
     }
 
@@ -99,9 +102,6 @@ const QueryBuilderModal = ({ setOpenModal, queryBuilder }: QueryBuilderModalProp
         }
     }, [queryBuilder])
 
-    console.log(ruleGroupObject)
-    console.log(queryBuilder)
-
     return (
         <div id="modal_background" className="fixed min-h-screen top-0 left-0 w-screen bg-black/30 flex items-center justify-center z-10">
             <div className='bg-[#1D2025] z-20 w-[960px] rounded overflow-hidden'>
@@ -110,7 +110,7 @@ const QueryBuilderModal = ({ setOpenModal, queryBuilder }: QueryBuilderModalProp
                     {ruleGroupString.length == 0
                         ? <p className='text-sm text-[#A5B4FC]'>The query you build will be saved in your active view</p>
                         : <div className='flex gap-2'>
-                            <div className={`bg-[#4338CA] text-sm leading-[22.5px] w-full p-2 rounded text-ellipsis ${viewMore ? 'h-[36px] overflow-hidden' : ''}`}><strong>Query: </strong>{ruleGroupString}</div>
+                            <div className={`bg-[#4338CA] text-sm leading-[23px] w-full p-2 rounded text-ellipsis ${viewMore ? 'h-[36px] overflow-hidden' : ''}`}><strong>Query: </strong>{ruleGroupString}</div>
                             <button onClick={() => setViewMore(!viewMore)}>{viewMore ? 'more...' : 'less...'}</button>
                         </div>
                     }
@@ -147,7 +147,7 @@ const QueryBuilderModal = ({ setOpenModal, queryBuilder }: QueryBuilderModalProp
                                             <div key={index} className='flex items-end w-full gap-4 mb-4'>
                                                 <div className='flex flex-col'>
                                                     <label className='mb-2 text-xs' htmlFor={`field-${index}`}>Field:</label>
-                                                    <Select disabled defaultValue={child.field}>
+                                                    <Select disabled value={child.field}>
                                                         <SelectTrigger className="px-3 py-2 rounded outline-none w-[250px] border-[#404348] border-[1px] bg-white/5 h-9 text-[14px] disabled:opacity-100">
                                                             <SelectValue placeholder="Select field" />
                                                         </SelectTrigger>
@@ -169,7 +169,7 @@ const QueryBuilderModal = ({ setOpenModal, queryBuilder }: QueryBuilderModalProp
                                                 </div>
                                                 <div className='flex flex-col'>
                                                     <label className='mb-2 text-xs' htmlFor={`condition-${index}`}>Condition:</label>
-                                                    <Select disabled defaultValue={child.condition}>
+                                                    <Select disabled value={child.condition}>
                                                         <SelectTrigger className="px-3 py-2 rounded outline-none w-[250px] border-[#404348] border-[1px] bg-white/5 h-9 text-[14px] disabled:opacity-100">
                                                             <SelectValue placeholder="Select field" />
                                                         </SelectTrigger>
@@ -186,12 +186,12 @@ const QueryBuilderModal = ({ setOpenModal, queryBuilder }: QueryBuilderModalProp
                                                     <label className='mb-2 text-xs' htmlFor={`value-${index}`}>Value:</label>
                                                     <input
                                                         readOnly
-                                                        defaultValue={child.value}
+                                                        value={child.value}
                                                         className='px-3 py-2 rounded outline-none w-[250px] border-[#404348] border-[1px] bg-white/5 h-9 text-[14px]'
                                                         id={`value-${index}`}
                                                     />
                                                 </div>
-                                                <div role='button' onClick={() => handleDeleteRule(index)} className='border-[#404348] border-[1px] bg-white/5 w-9 h-9 flex items-center justify-center rounded'>
+                                                <div role='button' onClick={() => handleDeleteRule({ field: child.field, condition: child.condition, value: child.value })} className='border-[#404348] border-[1px] bg-white/5 w-9 h-9 flex items-center justify-center rounded'>
                                                     <img src="/delete.svg" />
                                                 </div>
                                             </div>
