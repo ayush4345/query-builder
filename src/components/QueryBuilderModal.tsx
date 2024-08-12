@@ -89,16 +89,19 @@ const QueryBuilderModal = ({ setOpenModal, queryBuilder }: QueryBuilderModalProp
 
     return (
         <div id="modal_background" className="fixed min-h-screen top-0 left-0 w-screen bg-black/30 flex items-center justify-center z-10">
-            <div className='bg-[#1D2025] z-20 w-[960px]'>
+            <div className='bg-[#1D2025] z-20 w-[960px] rounded overflow-hidden'>
                 <div className='bg-[#5C61F0] min-h-[116px] relative px-5 py-4 flex flex-col gap-1 justify-center'>
-                    <p className='font-semibold'>Build your query</p>
-                    <div className='flex gap-2'>
-                        <div className={`bg-[#4338CA] leading-[26px] p-2 rounded text-ellipsis ${viewMore ? 'h-10 overflow-hidden' : ''}`}><strong>Query: </strong>{ruleGroupString}</div>
-                        <button onClick={() => setViewMore(!viewMore)}>{viewMore ? 'more...' : 'less...'}</button>
-                    </div>
+                    <p className='font-semibold'>{ruleGroupString.length == 0 ? 'Create tag and query' : 'Build your query'}</p>
+                    {ruleGroupString.length == 0
+                        ? <p className='text-sm text-[#A5B4FC]'>The query you build will be saved in your active view</p>
+                        : <div className='flex gap-2'>
+                            <div className={`bg-[#4338CA] text-sm leading-[23px] w-full p-2 rounded text-ellipsis ${viewMore ? 'h-[38px] overflow-hidden' : ''}`}><strong>Query: </strong>{ruleGroupString}</div>
+                            <button onClick={() => setViewMore(!viewMore)}>{viewMore ? 'more...' : 'less...'}</button>
+                        </div>
+                    }
                     <button onClick={() => setOpenModal(false)} className='absolute top-3 right-4 bg-[#4338CA] w-6 h-6 rounded-[6px]'><img src='X.svg' /></button>
                 </div>
-                <section className={`mt-5 h-[65vh] overflow-y-scroll mx-7 ${ruleGroupObject && ruleGroupObject.children.filter(child => child.type === RULETYPE.rule_group).length > 0 ? "bg-[#282B30] p-4 rounded border-[1px] border-[#404348]" : ""}`}>
+                <section className={`mt-5 h-[65vh] overflow-y-auto mx-7 ${ruleGroupObject && ruleGroupObject.children.filter(child => child.type === RULETYPE.rule_group).length > 0 ? "bg-[#282B30] p-4 rounded border-[1px] border-[#404348]" : ""}`}>
                     {ruleGroupObject && ruleGroupObject.children.filter(child => child.type === RULETYPE.rule_group).length > 0 &&
                         <div className='bg-white/5 border-[1px] flex border-[#404348] relative w-24 h-8 rounded mb-7'>
                             <button onClick={() => handleConjunctionChange(CONJUNCTION.and)} className={`w-12 block text-center rounded-l ${ruleGroupObject.conjunction == CONJUNCTION.and ? 'bg-[#5C61F0]' : ''}`}>AND</button>
