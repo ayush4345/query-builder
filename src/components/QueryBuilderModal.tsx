@@ -29,7 +29,7 @@ const QueryBuilderModal = ({ setOpenModal, queryBuilder }: QueryBuilderModalProp
     const [viewMore, setViewMore] = useState<boolean>(true)
 
     const [ruleGroupObject, setRuleGroupObject] = useState<RuleGroup | null>(null);
-    const [ruleGroupString, setRuleGroupString] = useState('');
+    const [ruleGroupString, setRuleGroupString] = useState<string>('');
 
     const updateRuleGroupState = () => {
         setRuleGroupObject(queryBuilder.getRuleGroupObject());
