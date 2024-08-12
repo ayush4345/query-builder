@@ -69,6 +69,12 @@ const QueryBuilderModal = ({ setOpenModal, queryBuilder }: QueryBuilderModalProp
         }
     }
 
+    const handleDeleteRule = (index: number) => {
+
+        queryBuilder.deleteRule(index);
+        updateRuleGroupState();
+    }
+
     const handleConjunctionChange = (conjunction: CONJUNCTION) => {
         queryBuilder.setConjunction(conjunction);
         updateRuleGroupState();
@@ -104,13 +110,13 @@ const QueryBuilderModal = ({ setOpenModal, queryBuilder }: QueryBuilderModalProp
                     {ruleGroupString.length == 0
                         ? <p className='text-sm text-[#A5B4FC]'>The query you build will be saved in your active view</p>
                         : <div className='flex gap-2'>
-                            <div className={`bg-[#4338CA] text-sm leading-[23px] w-full p-2 rounded text-ellipsis ${viewMore ? 'h-[38px] overflow-hidden' : ''}`}><strong>Query: </strong>{ruleGroupString}</div>
+                            <div className={`bg-[#4338CA] text-sm leading-[22.5px] w-full p-2 rounded text-ellipsis ${viewMore ? 'h-[36px] overflow-hidden' : ''}`}><strong>Query: </strong>{ruleGroupString}</div>
                             <button onClick={() => setViewMore(!viewMore)}>{viewMore ? 'more...' : 'less...'}</button>
                         </div>
                     }
                     <button onClick={() => setOpenModal(false)} className='absolute top-3 right-4 bg-[#4338CA] w-6 h-6 rounded-[6px]'><img src='X.svg' /></button>
                 </div>
-                <section className={`mt-5 h-[65vh] overflow-y-auto mx-7 ${ruleGroupObject && ruleGroupObject.children.filter(child => child.type === RULETYPE.rule_group).length > 0 ? "bg-[#282B30] p-4 rounded border-[1px] border-[#404348]" : ""}`}>
+                <section style={{ scrollbarWidth: 'none' }} className={`mt-5 h-[65vh] overflow-y-auto mx-7 ${ruleGroupObject && ruleGroupObject.children.filter(child => child.type === RULETYPE.rule_group).length > 0 ? "bg-[#282B30] p-4 rounded border-[1px] border-[#404348]" : ""}`}>
                     {ruleGroupObject && ruleGroupObject.children.filter(child => child.type === RULETYPE.rule_group).length > 0 &&
                         <div className='bg-white/5 border-[1px] flex border-[#404348] relative w-24 h-8 rounded mb-7'>
                             <button onClick={() => handleConjunctionChange(CONJUNCTION.and)} className={`w-12 block text-center rounded-l ${ruleGroupObject.conjunction == CONJUNCTION.and ? 'bg-[#5C61F0]' : ''}`}>AND</button>
@@ -185,7 +191,7 @@ const QueryBuilderModal = ({ setOpenModal, queryBuilder }: QueryBuilderModalProp
                                                         id={`value-${index}`}
                                                     />
                                                 </div>
-                                                <div className='border-[#404348] cursor-pointer border-[1px] bg-white/5 w-9 h-9 flex items-center justify-center rounded'>
+                                                <div role='button' onClick={() => handleDeleteRule(index)} className='border-[#404348] border-[1px] bg-white/5 w-9 h-9 flex items-center justify-center rounded'>
                                                     <img src="/delete.svg" />
                                                 </div>
                                             </div>

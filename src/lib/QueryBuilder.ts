@@ -17,6 +17,13 @@ export class QueryBuilder {
     return this;
   }
 
+  deleteRule(index: number): this {
+    if (this.ruleGroup.children.length > 0 && this.ruleGroup.children[index].type == 'rule') {
+      this.ruleGroup.children.splice(index, 1);
+    }
+    return this;
+  }
+
   addRuleGroup(ruleGroup: RuleGroup): this {
     this.ruleGroup.children.push(ruleGroup);
     return this;
