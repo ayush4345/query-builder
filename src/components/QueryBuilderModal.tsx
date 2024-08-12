@@ -242,6 +242,7 @@ const QueryBuilderModal = ({ setOpenModal, queryBuilder }: QueryBuilderModalProp
                                 <label className='mb-2 text-xs' htmlFor="new-value">Value:</label>
                                 <input
                                     value={value}
+                                    type={field == 'Rating' ? 'number' : 'text'}
                                     onChange={(e) => setValue(e.target.value)}
                                     className='px-3 py-2 rounded outline-none w-[250px] border-[#404348] border-[1px] bg-white/10 h-9 text-[14px]'
                                     id="new-value"
