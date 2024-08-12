@@ -11,9 +11,12 @@ export const RuleGroupBox: React.FC<RuleGroupProps> = ({ data }) => {
     return (
         <>
             <div className='bg-[#282B30] p-4 rounded border-[1px] border-[#404348]'>
-                <div className='bg-white/5 border-[1px] flex border-[#404348] relative w-24 h-8 rounded mb-7'>
-                    <button className={`w-12 block text-center rounded-l ${data.conjunction == CONJUNCTION.and ? 'bg-[#5C61F0]' : ''}`}>AND</button>
-                    <button className={`w-12 block text-center rounded-r ${data.conjunction == CONJUNCTION.or ? 'bg-[#5C61F0]' : ''}`}>OR</button>
+                <div className='flex items-center mb-7 gap-[10px]'>
+                    <div className='bg-white/5 border-[1px] flex border-[#404348] relative w-24 h-8 rounded'>
+                        <button className={`w-12 block text-center rounded-l ${data.conjunction == CONJUNCTION.and ? 'bg-[#5C61F0]' : ''}`}>AND</button>
+                        <button className={`w-12 block text-center rounded-r ${data.conjunction == CONJUNCTION.or ? 'bg-[#5C61F0]' : ''}`}>OR</button>
+                    </div>
+                    <img src="/info.svg" className='w-3 h-3' />
                 </div>
                 {data.children.map((data, index) => {
                     if (data.type == "rule") {

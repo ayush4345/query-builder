@@ -118,9 +118,12 @@ const QueryBuilderModal = ({ setOpenModal, queryBuilder }: QueryBuilderModalProp
                 </div>
                 <section style={{ scrollbarWidth: 'none' }} className={`mt-5 h-[65vh] overflow-y-auto mx-7 ${ruleGroupObject && ruleGroupObject.children.filter(child => child.type === RULETYPE.rule_group).length > 0 ? "bg-[#282B30] p-4 rounded border-[1px] border-[#404348]" : ""}`}>
                     {ruleGroupObject && ruleGroupObject.children.filter(child => child.type === RULETYPE.rule_group).length > 0 &&
-                        <div className='bg-white/5 border-[1px] flex border-[#404348] relative w-24 h-8 rounded mb-7'>
-                            <button onClick={() => handleConjunctionChange(CONJUNCTION.and)} className={`w-12 block text-center rounded-l ${ruleGroupObject.conjunction == CONJUNCTION.and ? 'bg-[#5C61F0]' : ''}`}>AND</button>
-                            <button onClick={() => handleConjunctionChange(CONJUNCTION.or)} className={`w-12 block text-center rounded-r ${ruleGroupObject.conjunction == CONJUNCTION.or ? 'bg-[#5C61F0]' : ''}`}>OR</button>
+                        <div className='flex items-center mb-7 gap-[10px]'>
+                            <div className='bg-white/5 border-[1px] flex border-[#404348] relative w-24 h-8 rounded'>
+                                <button onClick={() => handleConjunctionChange(CONJUNCTION.and)} className={`w-12 block text-center rounded-l ${ruleGroupObject.conjunction == CONJUNCTION.and ? 'bg-[#5C61F0]' : ''}`}>AND</button>
+                                <button onClick={() => handleConjunctionChange(CONJUNCTION.or)} className={`w-12 block text-center rounded-r ${ruleGroupObject.conjunction == CONJUNCTION.or ? 'bg-[#5C61F0]' : ''}`}>OR</button>
+                            </div>
+                            <img src="/info.svg" className='w-3 h-3' />
                         </div>
                     }
                     {
@@ -136,9 +139,12 @@ const QueryBuilderModal = ({ setOpenModal, queryBuilder }: QueryBuilderModalProp
                         {ruleGroupObject && (
                             <>
                                 {ruleGroupObject.children.length > 1 &&
-                                    <div className='bg-white/5 border-[1px] flex border-[#404348] relative w-24 h-8 rounded mb-7'>
-                                        <button onClick={() => setMainConjunction(CONJUNCTION.and)} className={`w-12 block text-center rounded-l ${mainConjunction == CONJUNCTION.and ? 'bg-[#5C61F0]' : ''}`}>AND</button>
-                                        <button onClick={() => setMainConjunction(CONJUNCTION.or)} className={`w-12 block text-center rounded-r ${mainConjunction == CONJUNCTION.or ? 'bg-[#5C61F0]' : ''}`}>OR</button>
+                                    <div className='flex items-center mb-7 gap-[10px]'>
+                                        <div className='bg-white/5 border-[1px] flex border-[#404348] relative w-24 h-8 rounded'>
+                                            <button onClick={() => setMainConjunction(CONJUNCTION.and)} className={`w-12 block text-center rounded-l ${mainConjunction == CONJUNCTION.and ? 'bg-[#5C61F0]' : ''}`}>AND</button>
+                                            <button onClick={() => setMainConjunction(CONJUNCTION.or)} className={`w-12 block text-center rounded-r ${mainConjunction == CONJUNCTION.or ? 'bg-[#5C61F0]' : ''}`}>OR</button>
+                                        </div>
+                                        <img src="/info.svg" className='w-3 h-3' />
                                     </div>
                                 }
                                 {ruleGroupObject.children.map((child, index) => {
