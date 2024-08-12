@@ -5,6 +5,15 @@ import { CONJUNCTION } from '@/constants/conjunction';
 import { RULETYPE } from '@/constants/rule-type-enum';
 import { RuleGroupBox } from './RuleGroupBox';
 import { ConditionType, FieldType } from '@/constants/options';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 type QueryBuilderModalProps = {
     setOpenModal: Dispatch<SetStateAction<boolean>>;
@@ -129,34 +138,43 @@ const QueryBuilderModal = ({ setOpenModal, queryBuilder }: QueryBuilderModalProp
                                 {ruleGroupObject.children.map((child, index) => {
                                     if (child.type == "rule") {
                                         return (
-                                            <div key={index} className='flex w-full gap-4 mb-4'>
+                                            <div key={index} className='flex items-end w-full gap-4 mb-4'>
                                                 <div className='flex flex-col'>
                                                     <label className='mb-2 text-xs' htmlFor={`field-${index}`}>Field:</label>
-                                                    <select
-                                                        defaultValue={child.field}
-                                                        className='px-3 py-2 rounded outline-none w-[250px] border-[#404348] border-[1px] bg-white/5 h-9 text-[14px]'
-                                                        id={`field-${index}`}
-                                                    >
-                                                        {FieldType.map((field, idx) => (
-                                                            <option key={idx} className='text-black' value={field}>
-                                                                {field}
-                                                            </option>
-                                                        ))}
-                                                    </select>
+                                                    <Select disabled defaultValue={child.field}>
+                                                        <SelectTrigger className="px-3 py-2 rounded outline-none w-[250px] border-[#404348] border-[1px] bg-white/5 h-9 text-[14px] disabled:opacity-100">
+                                                            <SelectValue placeholder="Select field" />
+                                                        </SelectTrigger>
+                                                        <SelectContent className='bg-[#282B30] border-[#404348] border-[1px]'>
+                                                            <SelectGroup>
+                                                                <SelectLabel className='text-white/50 text-sm font-semibold tracking-[2.5px]'>PREDICTION</SelectLabel>
+                                                                {FieldType.slice(0, -1).map((field, idx) => (
+                                                                    <SelectItem className='focus:bg-[#C4C4C41A] focus:text-white text-white cursor-pointer' key={idx} value={field}>
+                                                                        {field}
+                                                                    </SelectItem>
+                                                                ))}
+                                                            </SelectGroup>
+                                                            <SelectGroup>
+                                                                <SelectLabel className='text-white/50 text-sm font-semibold tracking-[2.5px]'>COMMON</SelectLabel>
+                                                                <SelectItem className='focus:bg-[#C4C4C41A] focus:text-white text-white cursor-pointer' value="Customer ID">Customer ID</SelectItem>
+                                                            </SelectGroup>
+                                                        </SelectContent>
+                                                    </Select>
                                                 </div>
                                                 <div className='flex flex-col'>
                                                     <label className='mb-2 text-xs' htmlFor={`condition-${index}`}>Condition:</label>
-                                                    <select
-                                                        defaultValue={child.condition}
-                                                        className='px-3 py-2 rounded outline-none w-[250px] border-[#404348] border-[1px] bg-white/5 h-9 text-[14px]'
-                                                        id={`condition-${index}`}
-                                                    >
-                                                        {ConditionType.map((condition, idx) => (
-                                                            <option key={idx} className='text-black' value={condition}>
-                                                                {condition}
-                                                            </option>
-                                                        ))}
-                                                    </select>
+                                                    <Select disabled defaultValue={child.condition}>
+                                                        <SelectTrigger className="px-3 py-2 rounded outline-none w-[250px] border-[#404348] border-[1px] bg-white/5 h-9 text-[14px] disabled:opacity-100">
+                                                            <SelectValue placeholder="Select field" />
+                                                        </SelectTrigger>
+                                                        <SelectContent className='bg-[#282B30] border-[#404348] border-[1px]'>
+                                                            {ConditionType.map((condition, idx) => (
+                                                                <SelectItem className='focus:bg-[#C4C4C41A] focus:text-white text-white cursor-pointer' key={idx} value={condition}>
+                                                                    {condition}
+                                                                </SelectItem>
+                                                            ))}
+                                                        </SelectContent>
+                                                    </Select>
                                                 </div>
                                                 <div className='flex flex-col'>
                                                     <label className='mb-2 text-xs' htmlFor={`value-${index}`}>Value:</label>
@@ -167,6 +185,9 @@ const QueryBuilderModal = ({ setOpenModal, queryBuilder }: QueryBuilderModalProp
                                                         id={`value-${index}`}
                                                     />
                                                 </div>
+                                                <div className='border-[#404348] cursor-pointer border-[1px] bg-white/5 w-9 h-9 flex items-center justify-center rounded'>
+                                                    <img src="/delete.svg" />
+                                                </div>
                                             </div>
                                         )
                                     }
@@ -176,42 +197,47 @@ const QueryBuilderModal = ({ setOpenModal, queryBuilder }: QueryBuilderModalProp
                         <div className='flex w-full gap-4 mb-4'>
                             <div className='flex flex-col'>
                                 <label className='mb-2 text-xs' htmlFor="new-field">Field:</label>
-                                <select
-                                    value={field}
-                                    onChange={(e) => setField(e.target.value as Rule["field"])}
-                                    className='px-3 py-2 rounded outline-none w-[250px] border-[#404348] border-[1px] bg-white/5 h-9 text-[14px]'
-                                    id="new-field"
-                                >
-                                    <option value='' disabled>Select a field</option>
-                                    {FieldType.map((field, idx) => (
-                                        <option key={idx} className='text-black' value={field}>
-                                            {field}
-                                        </option>
-                                    ))}
-                                </select>
+                                <Select value={field} onValueChange={(value) => setField(value as Rule["field"])}>
+                                    <SelectTrigger className="px-3 py-2 rounded outline-none w-[250px] border-[#404348] border-[1px] bg-white/10 h-9 text-[14px]">
+                                        <SelectValue placeholder="Select field" />
+                                    </SelectTrigger>
+                                    <SelectContent className='bg-[#282B30] border-[#404348] border-[1px]'>
+                                        <SelectGroup>
+                                            <SelectLabel className='text-white/50 text-sm font-semibold tracking-[2.5px]'>PREDICTION</SelectLabel>
+                                            {FieldType.slice(0, -1).map((field, idx) => (
+                                                <SelectItem className='focus:bg-[#C4C4C41A] focus:text-white text-white cursor-pointer' key={idx} value={field}>
+                                                    {field}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectGroup>
+                                        <SelectGroup>
+                                            <SelectLabel className='text-white/50 text-sm font-semibold tracking-[2.5px]'>COMMON</SelectLabel>
+                                            <SelectItem className='focus:bg-[#C4C4C41A] focus:text-white text-white cursor-pointer' value="Customer ID">Customer ID</SelectItem>
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
                             </div>
                             <div className='flex flex-col'>
                                 <label className='mb-2 text-xs' htmlFor="new-condition">Condition:</label>
-                                <select
-                                    value={condition}
-                                    onChange={(e) => setCondition(e.target.value as Rule["condition"])}
-                                    className='px-3 py-2 rounded outline-none w-[250px] border-[#404348] border-[1px] bg-white/5 h-9 text-[14px]'
-                                    id="new-condition"
-                                >
-                                    <option value='' disabled>Select a condition</option>
-                                    {ConditionType.map((condition, idx) => (
-                                        <option key={idx} className='text-black' value={condition}>
-                                            {condition}
-                                        </option>
-                                    ))}
-                                </select>
+                                <Select value={condition} onValueChange={(value) => setCondition(value as Rule["condition"])}>
+                                    <SelectTrigger className="px-3 py-2 rounded outline-none w-[250px] border-[#404348] border-[1px] bg-white/10 h-9 text-[14px]">
+                                        <SelectValue placeholder="Select condition" />
+                                    </SelectTrigger>
+                                    <SelectContent className='bg-[#282B30] border-[#404348] border-[1px]'>
+                                        {ConditionType.map((condition, idx) => (
+                                            <SelectItem className='focus:bg-[#C4C4C41A] focus:text-white text-white cursor-pointer' key={idx} value={condition}>
+                                                {condition}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
                             </div>
                             <div className='flex flex-col'>
                                 <label className='mb-2 text-xs' htmlFor="new-value">Value:</label>
                                 <input
                                     value={value}
                                     onChange={(e) => setValue(e.target.value)}
-                                    className='px-3 py-2 rounded outline-none w-[250px] border-[#404348] border-[1px] bg-white/5 h-9 text-[14px]'
+                                    className='px-3 py-2 rounded outline-none w-[250px] border-[#404348] border-[1px] bg-white/10 h-9 text-[14px]'
                                     id="new-value"
                                 />
                             </div>
